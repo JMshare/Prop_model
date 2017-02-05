@@ -1,0 +1,38 @@
+function [F, V, eg_st, eg_nd] = mesh_surface(Xs, Rs, Ys, Ns, F, V, closed, plti)
+    
+    if closed == 1
+        Xs = [Xs]
+    end
+    N = size(Xs, 2); 
+    for i = 1:N-1
+        [S1] = spline_cubic3([Xs(:,i)'; Rs(:,i)'; Ys(:,i)'], Ns);
+        adapt = 0;
+        %adapt = 1*(eg_to(3,i+1)>eg_to(3,i)) - 1*(eg_to(3,i+1)<eg_to(3,i));
+        [S2] = spline_cubic3([Xs(:,i+1)'; Rs(:,i+1)'; Ys(:,i+1)'], Ns+adapt);
+
+        [Fs, Vs, F, V] = generate_mesh_slice(F, V, S1, S2);
+
+        Ns = length(S2);
+        
+        if i == 1
+            eg_st = S1;
+        end
+        if i == N-1
+            eg_nd = S2;
+        end
+        
+        if i == plti
+            figure(8)
+            axis equal;
+            hold on;
+            trimesh(Fs, Vs(:,1),Vs(:,2), Vs(:,3));
+            title('The whole observed slice');
+            figure(11)
+            trimesh(Fs(end-3:end,:), Vs(:,1),Vs(:,2), Vs(:,3), 'FaceColor', 'blue');
+            axis equal;
+            hold on;
+        end
+    
+    end
+    
+end
