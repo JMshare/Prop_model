@@ -18,7 +18,7 @@ function [F, V] = hub_mesh(Xstor, Rstor, Ystor, HubD, HubT, ShaftD, alpha0, alph
 
     % down from root
     eg_to = fliplr([Xstor(1,ixmn:end); Rstor(1,ixmn:end); Ystor(1,ixmn:end)]);
-    eg_from = fliplr([Xstor(1,ixmn:end); Rstor(1,ixmn:end); Ystor(1,ixmn:end)*0-HubT/2]);
+    eg_from = fliplr([Xstor(1,ixmn+1:end); Rstor(1,ixmn+1:end); Ystor(1,ixmn+1:end)*0-HubT/2]);
     [F, V, eg_st, eg_nd] = mesh_area(eg_from, eg_to, Nd, F, V);
     STdw = eg_from;
     S1dw = eg_st;
@@ -26,7 +26,7 @@ function [F, V] = hub_mesh(Xstor, Rstor, Ystor, HubD, HubT, ShaftD, alpha0, alph
 
 
     % back from root
-    eg_from = [S2dw, S2up(:,2:end)];
+    eg_from = [S2dw, S2up];
     N = length(eg_from)
     ys = linspace(-HubT/2, HubT/2, N);
     rs = 0*ys + HubD*sind(alphaT)/2;

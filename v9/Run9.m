@@ -155,7 +155,7 @@ V = zeros(0,3);
 
 
 %% Mesh Blade 
-plti = 1;
+plti = Nx/2-1;
 closetrail = 1;
 [F, V, eg_st, eg_nd] = mesh_surface(Xstor, Rstor, Ystor, Nr, F, V, closetrail, plti, 8, 11);
 
@@ -174,7 +174,7 @@ title('The tip edge');
 view(0,45);
 figure(11);
 hold on;
-trimesh(Fs(1:3, :), Vs(:,1),Vs(:,2), Vs(:,3), 'FaceColor', 'red');
+trimesh(Fs(end-4:end, :), Vs(:,1),Vs(:,2), Vs(:,3), 'FaceColor', 'red');
 axis equal;
 title('The tip edge bit with the trailing edge bit');
 

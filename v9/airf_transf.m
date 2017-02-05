@@ -57,15 +57,19 @@ function [X, Y] = airf_transf(A, cl, c, beta, rake, skew, thickness, reversex, r
     
     
     % Spline interpolate it
-    lng = length(X);
-    points = [X; Y];
-    pp = cscvn(points);
-    t = cumsum([0;((diff(points.').^2)*ones(2,1)).^(1/4)]).';
-    splup = fnval(pp, linspace(t(1), t(floor(lng/2)), Nx/2));
-    spldw = fnval(pp, linspace(t(floor(lng/2)), t(end), Nx/2+1));
-    spl = [splup, spldw(:,2:end)];
-    X = spl(1,:);
-    Y = spl(2,:);
+    i = Inf;
+    while i > Nx/2
+        points = [X; Y];
+        pp = cscvn(points);
+        t = cumsum([0;((diff(points.').^2)*ones(2,1)).^(1/4)]).';
+        [~, i] = min(X); % to have equal number of points up and down on the airfoil
+        splup = fnval(pp, linspace(t(1), t(i), Nx/2));
+        spldw = fnval(pp, linspace(t(i), t(end), Nx/2+1));
+        spl = [splup, spldw(:,2:end)];
+        X = spl(1,:);
+        Y = spl(2,:);
+        [~, i] = min(X); % to have equal number of points up and down on the airfoil after interpolating
+    end
     
     
     figure(5)

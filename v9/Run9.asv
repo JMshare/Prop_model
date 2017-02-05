@@ -39,10 +39,14 @@ end
 A = A';
 
 
-Nr = 400;
-Nx = 200;
+Nr = 100;
+Nx = 50;
 if Nx<length(A(1))
     sprintf('Warning: Nx less than airfoil data.\n');
+end
+if mod(Nx,2)~=0
+    sprintf('Warning: inserted odd Nx. Corrected to Nx-1.\n');
+    Nx = Nx-1;
 end
 
 
@@ -151,7 +155,7 @@ V = zeros(0,3);
 
 
 %% Mesh Blade 
-plti = 1;
+plti = Nx/2-;
 closetrail = 1;
 [F, V, eg_st, eg_nd] = mesh_surface(Xstor, Rstor, Ystor, Nr, F, V, closetrail, plti, 8, 11);
 
@@ -162,7 +166,7 @@ Y = Ystor(end,:);
 R = Rstor(end,:);
 S2 = [X(1:Nx/2); R(1:Nx/2); Y(1:Nx/2)];
 S1 = fliplr([X(Nx/2+1:end); R(Nx/2+1:end); Y(Nx/2+1:end)]);
-[Fs, Vs,] = generate_mesh_slice(S1, S2);
+[Fs, Vs, F, V] = generate_mesh_slice(F, V, S1, S2);
 figure(10)
 trimesh(Fs, Vs(:,1),Vs(:,2), Vs(:,3));
 axis equal;
@@ -170,7 +174,7 @@ title('The tip edge');
 view(0,45);
 figure(11);
 hold on;
-trimesh(Fs(1:3, :), Vs(:,1),Vs(:,2), Vs(:,3), 'FaceColor', 'red');
+trimesh(Fs(end-4:end, :), Vs(:,1),Vs(:,2), Vs(:,3), 'FaceColor', 'red');
 axis equal;
 title('The tip edge bit with the trailing edge bit');
 
