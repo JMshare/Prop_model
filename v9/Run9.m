@@ -39,13 +39,13 @@ end
 A = A';
 
 
-Nr = 100;
-Nx = 50;
+Nr = 400;
+Nx = 200;
 if Nx<length(A(1))
-    sprintf('Warning: Nx less than airfoil data.\n');
+    fprintf('Warning: Nx less than airfoil data.\n');
 end
 if mod(Nx,2)~=0
-    sprintf('Warning: inserted odd Nx. Corrected to Nx-1.\n');
+    fprintf('Warning: inserted odd Nx. Corrected to Nx-1.\n');
     Nx = Nx-1;
 end
 
@@ -56,7 +56,7 @@ dTip = 0.5;
 rTip = r(end)+dTip;
 cTip = c(end)/2.0;
 if c(end)/cTip < 0.2
-    sprintf('Warning, tip too squeezed. Consider rotating it.\n');
+    fprintf('Warning, tip too squeezed. Consider rotating it.\n');
 end
 Y = cell2mat(A(end));
 Y = Y(:,2);
@@ -72,7 +72,7 @@ dRoot = r(1)-HubD/2;
 rRoot = HubD/2;
 cRoot = pi*HubD/3.2;
 if cRoot > HubD
-    sprintf('Warning, root chord cant exceed the hub diameter.\n');
+    fprintf('Warning, root chord cant exceed the hub diameter.\n');
 end
 tRoot = (HubT/3)/HubD;
 betaRoot = 0;

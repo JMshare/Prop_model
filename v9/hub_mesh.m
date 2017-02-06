@@ -28,7 +28,8 @@ function [F, V] = hub_mesh(Xstor, Rstor, Ystor, HubD, HubT, ShaftD, alpha0, alph
     rs = 0*ys + HubD*sind(alphaT)/2;
     xs = 0*ys + HubD*cosd(alphaT)/2;
     eg_to = [xs; rs; ys];
-    [eg_from, eg_to, ~] = blend_edges(eg_from, eg_to, 3);
+    [eg_from, eg_to, N] = blend_edges(eg_from, eg_to, 3);
+    N
     [F, V, eg_st, eg_nd] = mesh_area(eg_from, eg_to, Nb, F, V);
     STdw = [STdw, eg_st(:,2:end)];
     STup = [STup, eg_nd(:,2:end)];
@@ -40,7 +41,8 @@ function [F, V] = hub_mesh(Xstor, Rstor, Ystor, HubD, HubT, ShaftD, alpha0, alph
     rs = 0*ys + HubD*sind(alpha0)/2;
     xs = 0*ys + HubD*cosd(alpha0)/2;
     eg_from = [xs; rs; ys];
-    [eg_from, eg_to, ~] = blend_edges(eg_from, eg_to, 4);
+    [eg_from, eg_to, N] = blend_edges(eg_from, eg_to, 4);
+    N
     [F, V, eg_st, eg_nd] = mesh_area(eg_from, eg_to, Nf, F, V);
     STdw = [eg_st, STdw(:,2:end)];
     STup = [eg_nd, STup(:,2:end)];

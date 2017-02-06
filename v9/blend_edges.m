@@ -6,7 +6,7 @@ function [eg_from, eg_to, N] = blend_edges(eg_from, eg_to, part)
     N = max(n_from, n_to);
     n_diff = abs(n_from-n_to);
     if n_diff~=0
-        sprintf('Blended edges in part %g.\n', part);
+        fprintf('Blended edges in part %g.\n', part);
         for i = 1:N-1
             if mod(i,floor((N-2)/n_diff)) == 0 % to fill in the missing points
                 if n_from > n_to

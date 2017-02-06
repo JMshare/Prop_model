@@ -69,6 +69,7 @@ function [X, Y] = airf_transf(A, cl, c, beta, rake, skew, thickness, reversex, r
         X = spl(1,:);
         Y = spl(2,:);
         [~, i] = min(X); % to have equal number of points up and down on the airfoil after interpolating
+        i = 0;
     end
     
     
