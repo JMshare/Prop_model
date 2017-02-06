@@ -1,22 +1,6 @@
 function [F, V, eg_st, eg_nd] = mesh_area(eg_from, eg_to, Ns, F, V)
     
-    n_from = length(eg_from)
-    n_to = length(eg_to)
-    N = max(n_from, n_to);
-    n_diff = abs(n_from-n_to);
-    if n_diff~=0
-        for i = 1:N-1
-            if mod(i,floor((N-2)/n_diff)) == 0 % to fill in the missing points
-                if n_from > n_to
-                    eg_to = [eg_to(:,1:i), eg_to(:,i:end)];
-                elseif n_from < n_to
-                    eg_from = [eg_from(:,1:i), eg_from(:,i:end)]; % (the ith point repeats here)
-                end
-            end
-        end
-    end
-    
-    
+    N = length(eg_from);
     Fa = zeros(0,3);
     Va = zeros(0,3);
     for i = 1:N-1 
@@ -26,10 +10,15 @@ function [F, V, eg_st, eg_nd] = mesh_area(eg_from, eg_to, Ns, F, V)
         %adapt = 1*(eg_to(3,i+1)>eg_to(3,i)) - 1*(eg_to(3,i+1)<eg_to(3,i));
         S2 = spline_cylinder3([eg_from(:,i+1)'; eg_to(:,i+1)'],... 
                          Ns + adapt);
+        
+        if all(S2(:,end) == S1(:,end)) % if blended, you want one less element there.
+            S2 = S2(:,1:end-1);
+        end
+        if all(S2(:,1) == S1(:,1)) % if blended, you want one less element there.
+            S2 = S2(:,2:end);
+        end
 
         [~, ~, Fa, Va] = generate_mesh_slice(Fa, Va, S1, S2);
-
-        Ns = length(S2);
 
         if i == 1
             eg_st = S1;

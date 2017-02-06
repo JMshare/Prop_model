@@ -10,14 +10,16 @@ function [F, V, eg_st, eg_nd] = mesh_surface(Xs, Rs, Ys, Ns, F, V, close, plti, 
     Fa = zeros(0,3);
     Va = zeros(0,3);
     for i = 1:N-1
-        [S1] = spline_cubic3([Xs(:,i)'; Rs(:,i)'; Ys(:,i)'], Ns);
+        S1 = spline_cubic3([Xs(:,i)'; Rs(:,i)'; Ys(:,i)'], Ns);
         adapt = 0;
         %adapt = 1*(eg_to(3,i+1)>eg_to(3,i)) - 1*(eg_to(3,i+1)<eg_to(3,i));
-        [S2] = spline_cubic3([Xs(:,i+1)'; Rs(:,i+1)'; Ys(:,i+1)'], Ns+adapt);
+        Ns = Ns+adapt;
+        S2 = spline_cubic3([Xs(:,i+1)'; Rs(:,i+1)'; Ys(:,i+1)'], Ns);
+        
+        [S1, S2] = slices_sanity_check(S1, S2);
 
         [Fs, Vs, Fa, Va] = generate_mesh_slice(Fa, Va, S1, S2);
-
-        Ns = length(S2);
+        
         
         if i == 1
             eg_st = S1;
