@@ -155,7 +155,7 @@ V = zeros(0,3);
 
 
 %% Mesh Blade 
-plti = Nx/2-1;
+plti = Nx/2-3;
 closetrail = 1;
 [F, V, eg_st, eg_nd] = mesh_surface(Xstor, Rstor, Ystor, Nr, F, V, closetrail, plti, 8, 11);
 
@@ -174,9 +174,10 @@ title('The tip edge');
 view(0,45);
 figure(11);
 hold on;
-trimesh(Fs(end-4:end, :), Vs(:,1),Vs(:,2), Vs(:,3), 'FaceColor', 'red');
+trimesh(Fs(end-3:end, :), Vs(:,1),Vs(:,2), Vs(:,3), 'FaceColor', 'red');
 axis equal;
 title('The tip edge bit with the trailing edge bit');
+view(-83,20);
 
 
 
@@ -238,6 +239,7 @@ stlwrite('./Matlab_Out/test.stl', F, V, 'mode', 'ascii');
 
 
 figure(7)
+view(2);
 
 fprintf('Generated %d Verticies and %d Faces.\n', length(V), length(F));
 
